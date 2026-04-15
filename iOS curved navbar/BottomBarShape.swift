@@ -9,6 +9,14 @@ import SwiftUI
 
 struct BottomBarShape: Shape {
     
+    var notchDepth: CGFloat
+
+    var animatableData: CGFloat {
+        get { notchDepth }
+        set { notchDepth = newValue }
+    }
+
+    
     func path(in rect: CGRect) -> Path {
         
         var path = Path()
@@ -23,13 +31,13 @@ struct BottomBarShape: Shape {
         path.move(to: CGPoint(x: 0, y: 0))
         
         path.addQuadCurve(
-            to: CGPoint(x: x2, y: base),
+            to: CGPoint(x: x2, y: base * notchDepth),
             control: CGPoint(x: base, y: 0)
         )
         
         path.addQuadCurve(
-            to: CGPoint(x: x4, y: base),
-            control: CGPoint(x: x3, y: x2)
+            to: CGPoint(x: x4, y: base * notchDepth),
+            control: CGPoint(x: x3, y: x2 * notchDepth)
         )
         
         path.addQuadCurve(

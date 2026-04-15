@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct CurvedCutButtonView: View {
+    
     let item: BottomBarItem
     let isActive: Bool
     let action: () -> Void
     
+    var notchDepth: CGFloat {
+        isActive ? 1 : 0
+    }
+
     var body: some View {
         Button(
             action: action
@@ -21,35 +26,32 @@ struct CurvedCutButtonView: View {
                 ZStack(alignment: .top) {
                     
                     VStack(spacing: 10) {
-                        if !isActive {
-                            item.icon
-                        }
                         Text(item.label)
+                            .padding(.top, 40-(40*notchDepth))
                     }
                     .frame(maxWidth: .infinity, maxHeight: 100)
                     .background(Color.white)
                     .foregroundStyle(Color.black)
                     
-                    if isActive {
-                        BottomBarShape()
-                            .fill(Color.black)
-                            .blendMode(.destinationOut)
-                    }
+                    BottomBarShape(notchDepth: notchDepth)
+                        .fill(Color.black)
+                        .blendMode(.destinationOut)
                     
                 }.compositingGroup()
                 
-                if isActive {
-                    item.icon
-                        .frame(width: 50, height: 50)
-                        .background(Color.white)
-                        .clipShape(
-                            Circle()
-                        )
-                        .offset(y: -30)
-                        .foregroundStyle(Color.black)
-                }
+                item.icon
+                    .frame(width: 50, height: 50)
+                    .background(Color.white)
+                    .clipShape(
+                        Circle()
+                    )
+                    .offset(y: 10-40*notchDepth)
+                    .foregroundStyle(Color.black)
             }
-        }.frame(maxWidth: .infinity, maxHeight: 100)
+        }
+        .frame(maxWidth: .infinity, maxHeight: 100)
+        .animation(.easeInOut(duration: 0.4), value: isActive)
+        .buttonStyle(NoHighlightButtonStyle())
     }
 }
 
